@@ -57,6 +57,18 @@ extension UIViewController: PanModalPresenter {
 
         present(viewControllerToPresent, animated: true, completion: nil)
     }
-
+    
+    /**
+     Configures a view controller for presentation using custom modalPresentationStyle always
+     - Parameters:
+     - viewControllerToPresent: The view controller to be presented
+     */
+ 
+    public func presentPanModal(_ viewControllerToPresent: PanModalPresentable.LayoutType) {
+        viewControllerToPresent.modalPresentationStyle = .custom
+        viewControllerToPresent.modalPresentationCapturesStatusBarAppearance = true
+        viewControllerToPresent.transitioningDelegate = PanModalPresentationDelegate.default
+        present(viewControllerToPresent, animated: true, completion: nil)
+    }
 }
 #endif

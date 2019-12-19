@@ -98,6 +98,10 @@ open class PanModalPresentationController: UIPresentationController {
     private var presentable: PanModalPresentable? {
         return presentedViewController as? PanModalPresentable
     }
+    
+    override open var shouldPresentInFullscreen: Bool {
+        return presentable?.shouldPresentInFullscreen ?? true
+    }
 
     // MARK: - Views
 
