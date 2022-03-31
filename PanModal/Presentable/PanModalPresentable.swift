@@ -61,6 +61,14 @@ public protocol PanModalPresentable: AnyObject {
      Default Value is 8.0.
      */
     var cornerRadius: CGFloat { get }
+    
+    /**
+     The maximum width of the pan modal container view.
+
+     If the view controller width is larger than the maximum width
+     the pan modal container view wil be centered and limited in width.
+     */
+    var maxWidth: CGFloat? { get }
 
     /**
      The springDamping value used to determine the amount of 'bounce'

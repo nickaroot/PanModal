@@ -348,12 +348,12 @@ private extension PanModalPresentationController {
             addDragIndicatorView(to: presentedView)
         }
 
+        setNeedsLayoutUpdate()
+        adjustPanContainerBackgroundColor()
+
         if presentable.shouldRoundTopCorners {
             addRoundedCorners(to: presentedView)
         }
-
-        setNeedsLayoutUpdate()
-        adjustPanContainerBackgroundColor()
     }
 
     /**
@@ -363,18 +363,28 @@ private extension PanModalPresentationController {
 
         guard let frame = containerView?.frame
             else { return }
+        
+        let cropFrame: CGRect
+        if let maxWidth = presentable?.maxWidth, frame.width > maxWidth {
+            cropFrame = CGRect(x: (frame.width - maxWidth) / 2,
+                               y: frame.origin.y,
+                               width: maxWidth,
+                               height: frame.height)
+        } else {
+            cropFrame = frame
+        }
 
-        let adjustedSize = CGSize(width: frame.size.width, height: frame.size.height - anchoredYPosition)
+        let adjustedSize = CGSize(width: cropFrame.size.width, height: cropFrame.size.height - anchoredYPosition)
         let additionalHeight = presentedViewController.view.frame.height - adjustedSize.height
         let panFrame = panContainerView.frame
-        panContainerView.frame.size = frame.size
+        panContainerView.frame.size = cropFrame.size
         
         if ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
             // if the container is already in the correct position, no need to adjust positioning
             // (rotations & size changes cause positioning to be out of sync)
-            adjust(toYPosition: panFrame.origin.y - panFrame.height + frame.height + additionalHeight)
+            adjust(toYPosition: panFrame.origin.y - panFrame.height + cropFrame.height + additionalHeight)
         }
-        panContainerView.frame.origin.x = frame.origin.x
+        panContainerView.frame.origin.x = cropFrame.origin.x
         presentedViewController.view.frame = CGRect(origin: .zero, size: adjustedSize)
     }
 
