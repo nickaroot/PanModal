@@ -37,7 +37,7 @@ open class PanModalPresentationController: UIPresentationController {
      Constants
      */
     struct Constants {
-        static let indicatorYOffset = CGFloat(-8)
+        static let indicatorYOffset = CGFloat(-12)
         static let snapMovementSensitivity = CGFloat(0.7)
         static let dragIndicatorSize = CGSize(width: 40, height: 4)
     }
@@ -865,10 +865,10 @@ private extension PanModalPresentationController {
                                 cornerRadii: CGSize(width: radius, height: radius))
 
         // Draw around the drag indicator view, if displayed
-        if presentable?.showDragIndicator == true {
-            let indicatorLeftEdgeXPos = view.bounds.width/2.0 - Constants.dragIndicatorSize.width/2.0
-            drawAroundDragIndicator(currentPath: path, indicatorLeftEdgeXPos: indicatorLeftEdgeXPos)
-        }
+//         if presentable?.showDragIndicator == true {
+//             let indicatorLeftEdgeXPos = view.bounds.width/2.0 - Constants.dragIndicatorSize.width/2.0
+//             drawAroundDragIndicator(currentPath: path, indicatorLeftEdgeXPos: indicatorLeftEdgeXPos)
+//         }
 
         // Set path as a mask to display optional drag indicator view & rounded corners
         let mask = CAShapeLayer()
