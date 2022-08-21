@@ -37,9 +37,9 @@ open class PanModalPresentationController: UIPresentationController {
      Constants
      */
     struct Constants {
-        static let indicatorYOffset = CGFloat(8.0)
+        static let indicatorYOffset = CGFloat(-8)
         static let snapMovementSensitivity = CGFloat(0.7)
-        static let dragIndicatorSize = CGSize(width: 36.0, height: 5.0)
+        static let dragIndicatorSize = CGSize(width: 40, height: 4)
     }
 
     // MARK: - Properties
