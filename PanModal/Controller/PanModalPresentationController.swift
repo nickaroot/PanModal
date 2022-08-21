@@ -37,7 +37,7 @@ open class PanModalPresentationController: UIPresentationController {
      Constants
      */
     struct Constants {
-        static let indicatorYOffset = CGFloat(-12)
+        static let indicatorYInset = CGFloat(8)
         static let snapMovementSensitivity = CGFloat(0.7)
         static let dragIndicatorSize = CGSize(width: 40, height: 4)
     }
@@ -418,7 +418,7 @@ private extension PanModalPresentationController {
     func addDragIndicatorView(to view: UIView) {
         view.addSubview(dragIndicatorView)
         dragIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -Constants.indicatorYOffset).isActive = true
+        dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: Constants.indicatorYInset).isActive = true
         dragIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         dragIndicatorView.widthAnchor.constraint(equalToConstant: Constants.dragIndicatorSize.width).isActive = true
         dragIndicatorView.heightAnchor.constraint(equalToConstant: Constants.dragIndicatorSize.height).isActive = true
@@ -885,13 +885,13 @@ private extension PanModalPresentationController {
      */
     func drawAroundDragIndicator(currentPath path: UIBezierPath, indicatorLeftEdgeXPos: CGFloat) {
 
-        let totalIndicatorOffset = Constants.indicatorYOffset + Constants.dragIndicatorSize.height
+        let totalIndicatorInset = Constants.indicatorYInset
 
         // Draw around drag indicator starting from the left
         path.addLine(to: CGPoint(x: indicatorLeftEdgeXPos, y: path.currentPoint.y))
-        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y - totalIndicatorOffset))
+        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y + totalIndicatorInset))
         path.addLine(to: CGPoint(x: path.currentPoint.x + Constants.dragIndicatorSize.width, y: path.currentPoint.y))
-        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y + totalIndicatorOffset))
+        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y - totalIndicatorInset))
     }
 }
 
