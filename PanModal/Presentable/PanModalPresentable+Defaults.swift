@@ -34,6 +34,10 @@ public extension PanModalPresentable where Self: UIViewController {
     var cornerRadius: CGFloat {
         return 8.0
     }
+    
+    var maxWidth: CGFloat? {
+        return nil
+    }
 
     var springDamping: CGFloat {
         return 0.8
@@ -95,6 +99,10 @@ public extension PanModalPresentable where Self: UIViewController {
 
     var showDragIndicator: Bool {
         return shouldRoundTopCorners
+    }
+    
+    var shouldPresentInFullscreen: Bool {
+        return true
     }
 
     func shouldRespond(to panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {

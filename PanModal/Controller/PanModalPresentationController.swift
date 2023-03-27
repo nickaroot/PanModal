@@ -37,9 +37,9 @@ open class PanModalPresentationController: UIPresentationController {
      Constants
      */
     struct Constants {
-        static let indicatorYOffset = CGFloat(8.0)
+        static let indicatorYInset = CGFloat(8)
         static let snapMovementSensitivity = CGFloat(0.7)
-        static let dragIndicatorSize = CGSize(width: 36.0, height: 5.0)
+        static let dragIndicatorSize = CGSize(width: 40, height: 4)
     }
 
     // MARK: - Properties
@@ -97,6 +97,10 @@ open class PanModalPresentationController: UIPresentationController {
      */
     private var presentable: PanModalPresentable? {
         return presentedViewController as? PanModalPresentable
+    }
+    
+    override open var shouldPresentInFullscreen: Bool {
+        return presentable?.shouldPresentInFullscreen ?? true
     }
 
     // MARK: - Views
@@ -351,12 +355,12 @@ private extension PanModalPresentationController {
             addDragIndicatorView(to: presentedView)
         }
 
+        setNeedsLayoutUpdate()
+        adjustPanContainerBackgroundColor()
+
         if presentable.shouldRoundTopCorners {
             addRoundedCorners(to: presentedView)
         }
-
-        setNeedsLayoutUpdate()
-        adjustPanContainerBackgroundColor()
     }
 
     /**
@@ -366,18 +370,28 @@ private extension PanModalPresentationController {
 
         guard let frame = containerView?.frame
             else { return }
+        
+        let cropFrame: CGRect
+        if let maxWidth = presentable?.maxWidth, frame.width > maxWidth {
+            cropFrame = CGRect(x: (frame.width - maxWidth) / 2,
+                               y: frame.origin.y,
+                               width: maxWidth,
+                               height: frame.height)
+        } else {
+            cropFrame = frame
+        }
 
-        let adjustedSize = CGSize(width: frame.size.width, height: frame.size.height - anchoredYPosition)
+        let adjustedSize = CGSize(width: cropFrame.size.width, height: cropFrame.size.height - anchoredYPosition)
+        let additionalHeight = presentedViewController.view.frame.height - adjustedSize.height
         let panFrame = panContainerView.frame
-        panContainerView.frame.size = frame.size
+        panContainerView.frame.size = cropFrame.size
         
         if ![shortFormYPosition, longFormYPosition].contains(panFrame.origin.y) {
             // if the container is already in the correct position, no need to adjust positioning
             // (rotations & size changes cause positioning to be out of sync)
-            let yPosition = panFrame.origin.y - panFrame.height + frame.height
-            presentedView.frame.origin.y = max(yPosition, anchoredYPosition)
+            adjust(toYPosition: panFrame.origin.y - panFrame.height + cropFrame.height + additionalHeight)
         }
-        panContainerView.frame.origin.x = frame.origin.x
+        panContainerView.frame.origin.x = cropFrame.origin.x
         presentedViewController.view.frame = CGRect(origin: .zero, size: adjustedSize)
     }
 
@@ -411,7 +425,7 @@ private extension PanModalPresentationController {
     func addDragIndicatorView(to view: UIView) {
         view.addSubview(dragIndicatorView)
         dragIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -Constants.indicatorYOffset).isActive = true
+        dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: Constants.indicatorYInset + Constants.dragIndicatorSize.height).isActive = true
         dragIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         dragIndicatorView.widthAnchor.constraint(equalToConstant: Constants.dragIndicatorSize.width).isActive = true
         dragIndicatorView.heightAnchor.constraint(equalToConstant: Constants.dragIndicatorSize.height).isActive = true
@@ -848,10 +862,10 @@ private extension PanModalPresentationController {
                                 cornerRadii: CGSize(width: radius, height: radius))
 
         // Draw around the drag indicator view, if displayed
-        if presentable?.showDragIndicator == true {
-            let indicatorLeftEdgeXPos = view.bounds.width/2.0 - Constants.dragIndicatorSize.width/2.0
-            drawAroundDragIndicator(currentPath: path, indicatorLeftEdgeXPos: indicatorLeftEdgeXPos)
-        }
+//         if presentable?.showDragIndicator == true {
+//             let indicatorLeftEdgeXPos = view.bounds.width/2.0 - Constants.dragIndicatorSize.width/2.0
+//             drawAroundDragIndicator(currentPath: path, indicatorLeftEdgeXPos: indicatorLeftEdgeXPos)
+//         }
 
         // Set path as a mask to display optional drag indicator view & rounded corners
         let mask = CAShapeLayer()
@@ -868,13 +882,13 @@ private extension PanModalPresentationController {
      */
     func drawAroundDragIndicator(currentPath path: UIBezierPath, indicatorLeftEdgeXPos: CGFloat) {
 
-        let totalIndicatorOffset = Constants.indicatorYOffset + Constants.dragIndicatorSize.height
+        let totalIndicatorInset = Constants.indicatorYInset
 
         // Draw around drag indicator starting from the left
         path.addLine(to: CGPoint(x: indicatorLeftEdgeXPos, y: path.currentPoint.y))
-        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y - totalIndicatorOffset))
+        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y + totalIndicatorInset))
         path.addLine(to: CGPoint(x: path.currentPoint.x + Constants.dragIndicatorSize.width, y: path.currentPoint.y))
-        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y + totalIndicatorOffset))
+        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y - totalIndicatorInset))
     }
 }
 
