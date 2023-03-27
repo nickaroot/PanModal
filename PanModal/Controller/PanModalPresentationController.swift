@@ -117,7 +117,7 @@ open class PanModalPresentationController: UIPresentationController {
         }
         view.didTap = { [weak self] _ in
             if self?.presentable?.allowsTapToDismiss == true {
-                self?.dismissPresentedViewController()
+                self?.presentedViewController.dismiss(animated: true)
             }
         }
         return view
@@ -196,7 +196,14 @@ open class PanModalPresentationController: UIPresentationController {
         })
     }
 
+    override public func presentationTransitionDidEnd(_ completed: Bool) {
+        if completed { return }
+
+        backgroundView.removeFromSuperview()
+    }
+
     override public func dismissalTransitionWillBegin() {
+        presentable?.panModalWillDismiss()
 
         guard let coordinator = presentedViewController.transitionCoordinator else {
             backgroundView.dimState = .off
@@ -214,10 +221,10 @@ open class PanModalPresentationController: UIPresentationController {
         })
     }
 
-    override public func presentationTransitionDidEnd(_ completed: Bool) {
-        if completed { return }
-
-        backgroundView.removeFromSuperview()
+    override public func dismissalTransitionDidEnd(_ completed: Bool) {
+        if !completed { return }
+        
+        presentable?.panModalDidDismiss()
     }
 
     /**
@@ -315,7 +322,7 @@ private extension PanModalPresentationController {
     var isPresentedViewAnchored: Bool {
         if !isPresentedViewAnimating
             && extendsPanScrolling
-            && presentedView.frame.minY <= anchoredYPosition {
+            && presentedView.frame.minY.rounded() <= anchoredYPosition.rounded() {
             return true
         }
 
@@ -342,7 +349,7 @@ private extension PanModalPresentationController {
          in the presentation animator instead of here
          */
         containerView.addSubview(presentedView)
-        containerView.addGestureRecognizer(panGestureRecognizer)
+        presentedView.addGestureRecognizer(panGestureRecognizer)
 
         if presentable.showDragIndicator {
             addDragIndicatorView(to: presentedView)
@@ -530,7 +537,7 @@ private extension PanModalPresentationController {
                     transition(to: .shortForm)
 
                 } else {
-                    dismissPresentedViewController()
+                    presentedViewController.dismiss(animated: true)
                 }
 
             } else {
@@ -548,7 +555,7 @@ private extension PanModalPresentationController {
                     transition(to: .shortForm)
 
                 } else {
-                    dismissPresentedViewController()
+                    presentedViewController.dismiss(animated: true)
                 }
             }
         }
@@ -686,16 +693,6 @@ private extension PanModalPresentationController {
         guard let nearestVal = values.min(by: { abs(number - $0) < abs(number - $1) })
             else { return number }
         return nearestVal
-    }
-
-    /**
-     Dismiss presented view
-     */
-    func dismissPresentedViewController() {
-        presentable?.panModalWillDismiss()
-        presentedViewController.dismiss(animated: true) { [weak self] in
-            self?.presentable?.panModalDidDismiss()
-        }
     }
 }
 
