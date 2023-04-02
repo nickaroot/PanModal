@@ -102,6 +102,13 @@ public protocol PanModalPresentable: AnyObject {
      Default Value is black with alpha component 0.7.
     */
     var panModalBackgroundColor: UIColor { get }
+    
+    /**
+     The drag indicator inside.
+
+     Default value is true.
+    */
+    var dragIndicatorInside: Bool { get }
 
     /**
      The drag indicator view color.
