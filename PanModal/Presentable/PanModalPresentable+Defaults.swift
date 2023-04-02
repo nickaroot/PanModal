@@ -56,7 +56,7 @@ public extension PanModalPresentable where Self: UIViewController {
     }
     
     var dragIndicatorInside: Bool {
-        return true
+        return false
     }
 
     var dragIndicatorBackgroundColor: UIColor {

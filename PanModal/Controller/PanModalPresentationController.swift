@@ -37,6 +37,7 @@ open class PanModalPresentationController: UIPresentationController {
      Constants
      */
     struct Constants {
+        static let indicatorYOffset = CGFloat(8)
         static let indicatorYInset = CGFloat(8)
         static let snapMovementSensitivity = CGFloat(0.7)
         static let dragIndicatorSize = CGSize(width: 40, height: 4)
@@ -429,7 +430,7 @@ private extension PanModalPresentationController {
            layoutPresentable.dragIndicatorInside {
             dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: Constants.indicatorYInset + Constants.dragIndicatorSize.height).isActive = true
         } else {
-            dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -Constants.indicatorYInset).isActive = true
+            dragIndicatorView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -Constants.indicatorYOffset).isActive = true
         }
         dragIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         dragIndicatorView.widthAnchor.constraint(equalToConstant: Constants.dragIndicatorSize.width).isActive = true
@@ -867,10 +868,10 @@ private extension PanModalPresentationController {
                                 cornerRadii: CGSize(width: radius, height: radius))
 
         // Draw around the drag indicator view, if displayed
-//         if presentable?.showDragIndicator == true {
-//             let indicatorLeftEdgeXPos = view.bounds.width/2.0 - Constants.dragIndicatorSize.width/2.0
-//             drawAroundDragIndicator(currentPath: path, indicatorLeftEdgeXPos: indicatorLeftEdgeXPos)
-//         }
+        if presentable?.showDragIndicator == true, presentable?.dragIndicatorInside == false {
+            let indicatorLeftEdgeXPos = view.bounds.width/2.0 - Constants.dragIndicatorSize.width/2.0
+            drawAroundDragIndicator(currentPath: path, indicatorLeftEdgeXPos: indicatorLeftEdgeXPos)
+        }
 
         // Set path as a mask to display optional drag indicator view & rounded corners
         let mask = CAShapeLayer()
@@ -887,13 +888,13 @@ private extension PanModalPresentationController {
      */
     func drawAroundDragIndicator(currentPath path: UIBezierPath, indicatorLeftEdgeXPos: CGFloat) {
 
-        let totalIndicatorInset = Constants.indicatorYInset
+        let totalIndicatorOffset = Constants.indicatorYOffset + Constants.dragIndicatorSize.height
 
         // Draw around drag indicator starting from the left
         path.addLine(to: CGPoint(x: indicatorLeftEdgeXPos, y: path.currentPoint.y))
-        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y + totalIndicatorInset))
+        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y + totalIndicatorOffset))
         path.addLine(to: CGPoint(x: path.currentPoint.x + Constants.dragIndicatorSize.width, y: path.currentPoint.y))
-        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y - totalIndicatorInset))
+        path.addLine(to: CGPoint(x: path.currentPoint.x, y: path.currentPoint.y - totalIndicatorOffset))
     }
 }
 
