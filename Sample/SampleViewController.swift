@@ -90,6 +90,7 @@ private extension SampleViewController {
 
     enum RowType: Int, CaseIterable {
         case basic
+        case basicUnderTabBar
         case fullScreen
         case alert
         case transientAlert
@@ -101,6 +102,7 @@ private extension SampleViewController {
         var presentable: RowPresentable {
             switch self {
             case .basic: return Basic()
+            case .basicUnderTabBar: return BasicUnderTabBar()
             case .fullScreen: return FullScreen()
             case .alert: return Alert()
             case .transientAlert: return TransientAlert()
@@ -113,6 +115,11 @@ private extension SampleViewController {
         struct Basic: RowPresentable {
             let string: String = "Basic"
             let rowVC: PanModalPresentable.LayoutType = BasicViewController()
+        }
+
+        struct BasicUnderTabBar: RowPresentable {
+            let string: String = "Basic (Under Tab Bar)"
+            let rowVC: PanModalPresentable.LayoutType = BasicUnderTabBarViewController()
         }
 
         struct FullScreen: RowPresentable {

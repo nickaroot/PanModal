@@ -108,6 +108,10 @@ public extension PanModalPresentable where Self: UIViewController {
     var shouldPresentInFullscreen: Bool {
         return true
     }
+    
+    var shouldPresentOverTabBar: Bool {
+        return true
+    }
 
     func shouldRespond(to panModalGestureRecognizer: UIPanGestureRecognizer) -> Bool {
         return true

@@ -15,7 +15,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = UINavigationController(rootViewController: SampleViewController())
+        
+        let tabBarController = UITabBarController()
+        
+        let firstSampleVC = SampleViewController()
+        
+        let firstNavigationController = UINavigationController(rootViewController: firstSampleVC)
+        
+        firstNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        let secondSampleVC = UIViewController()
+        
+        let secondNavigationController = UINavigationController(rootViewController: secondSampleVC)
+        
+        secondNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 2)
+        
+        tabBarController.viewControllers = [
+            firstNavigationController,
+            secondNavigationController,
+        ]
+        
+        window?.rootViewController = tabBarController
+        
         window?.makeKeyAndVisible()
         return true
     }

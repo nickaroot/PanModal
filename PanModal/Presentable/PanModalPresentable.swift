@@ -193,6 +193,12 @@ public protocol PanModalPresentable: AnyObject {
     Default value is true.
     */
     var shouldPresentInFullscreen: Bool { get }
+    
+    /**
+    A flag to determine if pan modal should be shown over or under tab bar
+    Default value is true.
+    */
+    var shouldPresentOverTabBar: Bool { get }
 
     /**
      Asks the delegate if the pan modal should respond to the pan modal gesture recognizer.

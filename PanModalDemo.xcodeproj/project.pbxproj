@@ -44,6 +44,7 @@
 		944EBA2E227BB7F400C4C97B /* FullScreenNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944EBA2D227BB7F400C4C97B /* FullScreenNavController.swift */; };
 		94795C9B21F0335D008045A0 /* PanModalPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94795C9A21F0335D008045A0 /* PanModalPresentationDelegate.swift */; };
 		94795C9D21F03368008045A0 /* PanContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94795C9C21F03368008045A0 /* PanContainerView.swift */; };
+		C31A69FB29E4BBD400F1E49A /* BasicUnderTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31A69FA29E4BA9200F1E49A /* BasicUnderTabBarViewController.swift */; };
 		DC13905E216D90D5007A3E64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC13905D216D90D5007A3E64 /* Assets.xcassets */; };
 		DC139061216D93ED007A3E64 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC139060216D93ED007A3E64 /* SampleViewController.swift */; };
 		DC139070216D9458007A3E64 /* PanModalPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC139066216D9458007A3E64 /* PanModalPresentationAnimator.swift */; };
@@ -116,6 +117,7 @@
 		944EBA2D227BB7F400C4C97B /* FullScreenNavController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenNavController.swift; sourceTree = "<group>"; };
 		94795C9A21F0335D008045A0 /* PanModalPresentationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanModalPresentationDelegate.swift; sourceTree = "<group>"; };
 		94795C9C21F03368008045A0 /* PanContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanContainerView.swift; sourceTree = "<group>"; };
+		C31A69FA29E4BA9200F1E49A /* BasicUnderTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicUnderTabBarViewController.swift; sourceTree = "<group>"; };
 		DC13905D216D90D5007A3E64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DC139060216D93ED007A3E64 /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		DC139066216D9458007A3E64 /* PanModalPresentationAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanModalPresentationAnimator.swift; sourceTree = "<group>"; };
@@ -256,6 +258,14 @@
 			path = "Full Screen";
 			sourceTree = "<group>";
 		};
+		C31A69F929E4BA8600F1E49A /* Basic (Under Tab Bar) */ = {
+			isa = PBXGroup;
+			children = (
+				C31A69FA29E4BA9200F1E49A /* BasicUnderTabBarViewController.swift */,
+			);
+			path = "Basic (Under Tab Bar)";
+			sourceTree = "<group>";
+		};
 		DC13905F216D93AB007A3E64 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,6 +338,7 @@
 		DC139079216D9AAA007A3E64 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C31A69F929E4BA8600F1E49A /* Basic (Under Tab Bar) */,
 				944EBA2B227BB7D900C4C97B /* Basic */,
 				944EBA2C227BB7E100C4C97B /* Full Screen */,
 				DC3B2EBB222A5882000C8A4A /* Alert */,
@@ -577,6 +588,7 @@
 				743CABB22225FD1100634A5A /* UserGroupHeaderView.swift in Sources */,
 				DC139072216D9458007A3E64 /* PanModalPresentable+UIViewController.swift in Sources */,
 				DC139074216D9458007A3E64 /* PanModalPresentationController.swift in Sources */,
+				C31A69FB29E4BBD400F1E49A /* BasicUnderTabBarViewController.swift in Sources */,
 				DC139071216D9458007A3E64 /* PanModalPresentable.swift in Sources */,
 				DC139061216D93ED007A3E64 /* SampleViewController.swift in Sources */,
 				743CABB02225FC9F00634A5A /* UserGroupViewController.swift in Sources */,

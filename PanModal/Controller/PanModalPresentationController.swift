@@ -123,6 +123,11 @@ open class PanModalPresentationController: UIPresentationController {
         }
         return view
     }()
+    
+    /**
+     Preserve tab bar superview to get it back on dismiss
+     */
+    private var tabBarSuperview: UIView?
 
     /**
      A wrapper around the presented view so that we can modify
@@ -224,6 +229,8 @@ open class PanModalPresentationController: UIPresentationController {
 
     override public func dismissalTransitionDidEnd(_ completed: Bool) {
         if !completed { return }
+        
+        layoutDismissedView()
         
         presentable?.panModalDidDismiss()
     }
@@ -330,6 +337,32 @@ private extension PanModalPresentationController {
         return false
     }
 
+    func layoutDismissedView() {
+        
+        /**
+         If the presented view controller does not conform to pan modal presentable
+         don't configure
+         */
+        guard let presentable = presentable
+            else { return }
+        
+        if !presentable.shouldPresentOverTabBar {
+            let tabBar: UITabBar?
+            
+            if let tabBarController = presentingViewController as? UITabBarController {
+                tabBar = tabBarController.tabBar
+            } else if let tabBarController = presentingViewController.tabBarController {
+                tabBar = tabBarController.tabBar
+            }  else {
+                tabBar = nil
+            }
+            
+            guard let tabBar, let tabBarSuperview else { return }
+            
+            tabBarSuperview.addSubview(tabBar)
+        }
+    }
+    
     /**
      Adds the presented view to the given container view
      & configures the view elements such as drag indicator, rounded corners
@@ -350,6 +383,25 @@ private extension PanModalPresentationController {
          in the presentation animator instead of here
          */
         containerView.addSubview(presentedView)
+        
+        if !presentable.shouldPresentOverTabBar {
+            let tabBar: UITabBar?
+
+            if let tabBarController = presentingViewController as? UITabBarController {
+                tabBar = tabBarController.tabBar
+            } else if let tabBarController = presentingViewController.tabBarController {
+                tabBar = tabBarController.tabBar
+            }  else {
+                tabBar = nil
+            }
+
+            if let tabBar {
+                tabBarSuperview = tabBar.superview
+                
+                containerView.addSubview(tabBar)
+            }
+        }
+            
         presentedView.addGestureRecognizer(panGestureRecognizer)
 
         if presentable.showDragIndicator {
